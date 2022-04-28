@@ -1,0 +1,34 @@
+<input autocomplete="off" type="text" id="arama" placeholder="Arama...">
+<div id="AramaListesi"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+               // arama inputuna giriş olduğunda fonksiyonu çalıştır
+                $("#arama").on("keyup", function(){
+                var arama = $(this).val();
+                //arama boş değilse getir.php ye arama adı ile arama inputundaki veriyi gönder
+                 if (arama !=="") {
+                  $.ajax({
+                     url:"getir.php",
+                    type:"POST",
+                    cache:false,
+                    data:{arama:arama},
+                    success:function(data){ // eğer başarılı ise arama listesi div içinde göster
+                       $("#AramaListesi").html(data);
+                      $("#AramaListesi").fadeIn();
+                    }  
+                  });
+                }else{
+                   $("#AramaListesi").html("");  
+                  $("#AramaListesi").fadeOut();
+                }
+              });
+
+              $("#AramaListesi").on("click","li", function(){ // gösterilen sonuçtan birine tıklanınca metni inputa ekle
+                $('#arama').val($(this).text()); 
+                 $('#AramaListesi').fadeOut("fast");
+              });
+          });
+</script>
+
